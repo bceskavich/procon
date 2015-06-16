@@ -19,8 +19,8 @@ var CHANGE_EVENT = 'change';
  * pros: {}, cons: {}
  */
 var _items = {
-  "pros": {},
-  "cons": {}
+  pros: {},
+  cons: {}
 };
 
 /**
@@ -105,7 +105,10 @@ var AppStore = assign({}, EventEmitter.prototype, {
    * Gets all of given type, ordered by creation
    */
   getAllChrono: function(type) {
-    var items = _items[type]
+    var items = [];
+    for (var id in _items[type]) {
+      items.push(_items[type][id]);
+    }
     items.sort(function(a,b) {
       if (a.date < b.date) {
         return -1;
@@ -115,7 +118,6 @@ var AppStore = assign({}, EventEmitter.prototype, {
         return 0;
       }
     });
-
     return items;
   }
 });
