@@ -24,13 +24,18 @@ var _items = {
 };
 
 /**
- * Adds a new pro to the private store
- * @param {object} item -- The full object of information for the item
+ * Adds a new item to the private store
  */
-function _createNewItem(item) {
-  if (!_items[item.type][item.id]) {
-    _items[item.type][item.id] = item;
-  }
+function _createNewItem(text, type) {
+  var id = Math.random().toString(36).substring(10);
+  var timestamp = Date.now();
+  var item = {
+    id: id,
+    date: timestamp,
+    text: text,
+    type: type
+  };
+  _items[type][id] = item;
 }
 
 /**
@@ -120,7 +125,7 @@ AppStore.dispatchToekn = AppDispatcher.register(function(action) {
   switch(action.type) {
 
     case action.CREATE_ITEM:
-      _createNewItem(action.item);
+      _createNewItem(action.text, action.type);
       AppStore.emitChange();
       break;
 
