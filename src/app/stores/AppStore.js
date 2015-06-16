@@ -125,27 +125,27 @@ AppStore.dispatchToekn = AppDispatcher.register(function(action) {
   switch(action.type) {
 
     case action.CREATE_ITEM:
-      _createNewItem(action.text, action.type);
+      _createNewItem(action.text, action.itemType);
       AppStore.emitChange();
       break;
 
     case action.DELETE_ITEM:
-      _deleteItem(action.id, action.type);
+      _deleteItem(action.id, action.itemType);
       AppStore.emitChange();
       break;
 
     case action.INC_ITEM_WEIGHT:
-      _incItemWeight(action.id, action.type);
+      _incItemWeight(action.id, action.itemType);
       AppStore.emitChange();
       break;
 
     case action.DEC_ITEM_WEIGHT:
-      _decItemWeight(action.id, action.type);
+      _decItemWeight(action.id, action.itemType);
       AppStore.emitChange();
       break;
 
     case action.DELETE_ALL:
-      _deleteAllOfType(action.type);
+      _deleteAllOfType(action.itemType);
       AppStore.emitChange();
       break;
 
