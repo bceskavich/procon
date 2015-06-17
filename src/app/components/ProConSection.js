@@ -10,16 +10,24 @@ function getStateFromStores(type) {
   };
 }
 
-function getProConItem(item) {
+function getItemList(items) {
+  if (!items) {
+    return '';
+  }
+  var itemList = items.map(function(item){
+    return <ProConItem item={item} key={item.id} />;
+  });
   return (
-    <ProConItem item={item} />
+    <ul>
+      {itemList}
+    </ul>
   );
 }
 
 var ProConSection = React.createClass({
 
   getInitialState: function() {
-    getStateFromStores(this.props.type);
+    return getStateFromStores(this.props.type);
   },
 
   componentDidMount: function() {
@@ -31,16 +39,13 @@ var ProConSection = React.createClass({
   },
 
   render: function() {
-    var items = this.state.items.map(getProConItem);
     return (
       <div className={this.props.type + "-section"}>
         <Composer type={this.props.type} />
-        <ul className={this.props.type + "-list">
-          {items}
-        </ul>
+        {getItemList(this.state.items)}
       </div>
     );
-  }
+  },
 
   // Event handler
   _onChange: function() {

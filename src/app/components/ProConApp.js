@@ -1,5 +1,4 @@
 var ProConSection = require('./ProConSection');
-var Graph = require('./Graph');
 var React = require('React');
 
 var ProConApp = React.createClass({
@@ -13,7 +12,6 @@ var ProConApp = React.createClass({
         <section>
           <ProConSection type="cons" />
         </section>
-        <Graph />
       </div>
     );
   }

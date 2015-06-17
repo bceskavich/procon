@@ -7,7 +7,6 @@
 
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var Constants = require('../constants/Constants.js');
-var ProConUtils = require('../utils/ProConUtils');
 var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
 
@@ -110,14 +109,9 @@ var AppStore = assign({}, EventEmitter.prototype, {
       items.push(_items[type][id]);
     }
     items.sort(function(a,b) {
-      if (a.date < b.date) {
-        return -1;
-      } else if (a.date > b.date) {
-        return 1;
-      } else {
-        return 0;
-      }
+      return a.date - b.date;
     });
+    console.log(items);
     return items;
   }
 });
@@ -126,27 +120,27 @@ AppStore.dispatchToekn = AppDispatcher.register(function(action) {
 
   switch(action.type) {
 
-    case action.CREATE_ITEM:
+    case ActionTypes.CREATE_ITEM:
       _createNewItem(action.text, action.itemType);
       AppStore.emitChange();
       break;
 
-    case action.DELETE_ITEM:
+    case ActionTypes.DELETE_ITEM:
       _deleteItem(action.id, action.itemType);
       AppStore.emitChange();
       break;
 
-    case action.INC_ITEM_WEIGHT:
+    case ActionTypes.INC_ITEM_WEIGHT:
       _incItemWeight(action.id, action.itemType);
       AppStore.emitChange();
       break;
 
-    case action.DEC_ITEM_WEIGHT:
+    case ActionTypes.DEC_ITEM_WEIGHT:
       _decItemWeight(action.id, action.itemType);
       AppStore.emitChange();
       break;
 
-    case action.DELETE_ALL:
+    case ActionTypes.DELETE_ALL:
       _deleteAllOfType(action.itemType);
       AppStore.emitChange();
       break;

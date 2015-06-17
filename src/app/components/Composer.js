@@ -1,37 +1,38 @@
-var AppStore = require('../stores/AppStore');
 var Actions = require('../actions/Actions');
 var React = require('react');
 
-var ENTRY = 12;
+var ENTER_KEY_CODE = 13;
 
 var Composer = React.createClass({
 
   getInitialState: function() {
-    this.setState({text: ""});
+    return {text: ''};
   },
 
   render: function() {
     return (
-      <textarea
-        className={this.props.type + "-composer"}
-        onChange={this._onChange}
-        onKeyDown={this._onKeyDown}
-        value={this.state.text} />
+      <div>
+        <input
+          type="text"
+          value={this.state.text}
+          onChange={this._onChange}
+          onKeyDown={this._onKeyDown} />
+      </div>
     );
   },
 
-  _onChange: function(event, value) {
+  _onChange: function(event) {
     this.setState({text: event.target.value});
   },
 
   _onKeyDown: function(event) {
-    if (event.keyCode === ENTRY) {
+    if (event.keyCode === ENTER_KEY_CODE) {
       event.preventDefault();
       var text = this.state.text.trim();
       if (text) {
         Actions.createItem(text, this.props.type);
       }
-      this.setState({text: ""})
+      this.setState({text: ""});
     }
   }
 

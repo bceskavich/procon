@@ -1,6 +1,5 @@
 var Constants = require('../constants/Constants');
-var Dispatcher = require('../dispatcher/Dispatcher');
-var AppUtils = require('../utils/AppUtils');
+var Dispatcher = require('../dispatcher/AppDispatcher');
 
 var ActionTypes = Constants.ActionTypes;
 
