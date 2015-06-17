@@ -23,6 +23,10 @@ ul {
 li {
   padding-left: 0px;
   margin-left: 0px;
+}
+
+.pros li,
+.cons li {
   cursor: pointer;
 }
 
@@ -109,6 +113,16 @@ span {
   text-align: right;
 }
 
+.clear a,
+.clear a {
+  color: #aaa;
+  border: 2px solid #aaa;
+  border-radius: 5px;
+  padding: 2.5px 5px;
+  font-size: 15px;
+  cursor: pointer;
+}
+
 #instructions {
   position: absolute;
   font-size: 12px;
@@ -116,3 +130,4 @@ span {
   margin-left: 15px;
   line-height: 1.6;
 }
+

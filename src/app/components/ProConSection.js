@@ -24,6 +24,10 @@ function getItemList(items) {
   );
 }
 
+function getClearButton(handler) {
+  return <a onClick={handler}>Clear All</a>;
+}
+
 var ProConSection = React.createClass({
 
   getInitialState: function() {
@@ -39,10 +43,20 @@ var ProConSection = React.createClass({
   },
 
   render: function() {
+    var clear;
+    if (this.state.items.length > 0) {
+      clear = getClearButton(this._clearAll);
+    } else {
+      clear = '';
+    }
+    console.log(clear);
     return (
       <div className={this.props.type + "-section"}>
         <Composer type={this.props.type} />
         {getItemList(this.state.items)}
+        <div className="clear">
+          {clear}
+        </div>
       </div>
     );
   },
@@ -50,6 +64,10 @@ var ProConSection = React.createClass({
   // Event handler
   _onChange: function() {
     this.setState(getStateFromStores(this.props.type));
+  },
+
+  _clearAll: function() {
+    Actions.deleteAll(this.props.type);
   }
 });
 
