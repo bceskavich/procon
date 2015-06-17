@@ -32,15 +32,14 @@ function _createNewItem(text, type) {
     id: id,
     date: timestamp,
     text: text,
-    type: type
+    type: type,
+    weight: 1
   };
   _items[type][id] = item;
 }
 
 /**
  * Deletes an item from our store
- * @param {string} id -- The ID for the given item
- * @param {string} type -- The type (pro, con)
  */
 function _deleteItem(id, type) {
   delete _items[type][id];
@@ -48,28 +47,22 @@ function _deleteItem(id, type) {
 
 /**
  * Deletes all items from our store of given type
- * @param {string} type - The type of the item
  */
 function _deleteAllOfType(type) {
   _items[type] = {};
 }
 
 /**
- * Increments an items weight
- * @param {string} id -- The ID for the given item
- * @param {string} type -- The type (pro, con)
+ * Increments (or resets) the weight of an item
  */
-function _incItemWeight(id, type) {
-  _items[type][id].weight += 1;
-}
-
-/**
- * Decrements an items weight
- * @param {string} id -- The ID for the given item
- * @param {string} type -- The type (pro, con)
- */
-function _decItemWeight(id, type) {
-  _items[type][id].weight -= 1;
+function _changeWeight(id, type) {
+  var item = _items[type][id];
+  if (item.weight >= 3) {
+    item.weight = 1;
+  } else {
+    item.weight += 1;
+  }
+  _items[type][id] = item;
 }
 
 var AppStore = assign({}, EventEmitter.prototype, {
@@ -130,13 +123,8 @@ AppStore.dispatchToekn = AppDispatcher.register(function(action) {
       AppStore.emitChange();
       break;
 
-    case ActionTypes.INC_ITEM_WEIGHT:
-      _incItemWeight(action.id, action.itemType);
-      AppStore.emitChange();
-      break;
-
-    case ActionTypes.DEC_ITEM_WEIGHT:
-      _decItemWeight(action.id, action.itemType);
+    case ActionTypes.CHANGE_WEIGHT:
+      _changeWeight(action.id, action.itemType);
       AppStore.emitChange();
       break;
 

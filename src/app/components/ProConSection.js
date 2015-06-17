@@ -15,7 +15,7 @@ function getItemList(items) {
     return '';
   }
   var itemList = items.map(function(item){
-    return <ProConItem item={item} key={item.id} />;
+    return <ProConItem id={item.id} type={item.type} key={item.id} />;
   });
   return (
     <ul>

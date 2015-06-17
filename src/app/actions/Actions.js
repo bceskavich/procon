@@ -21,17 +21,9 @@ module.exports = {
     });
   },
 
-  incrementItem: function(id, itemType) {
+  changeItemWeight: function(id, itemType) {
     Dispatcher.dispatch({
-      type: ActionTypes.INC_ITEM_WEIGHT,
-      itemType: itemType,
-      id: id
-    });
-  },
-
-  decrementItem: function(id, itemType) {
-    Dispatcher.dispatch({
-      type: ActionTypes.DEC_ITEM_WEIGHT,
+      type: ActionTypes.CHANGE_WEIGHT,
       itemType: itemType,
       id: id
     });

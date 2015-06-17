@@ -23,6 +23,15 @@ ul {
 li {
   padding-left: 0px;
   margin-left: 0px;
+  cursor: pointer;
+}
+
+li.two {
+  font-style: italic;
+}
+
+li.three {
+  font-weight: bold;
 }
 
 input {
