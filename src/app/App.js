@@ -3,5 +3,5 @@ var React = require('react');
 
 React.render(
   <ProConApp />,
-  document.getElementById('proconapp')
+  document.body
 );

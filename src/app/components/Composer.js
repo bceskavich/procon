@@ -10,14 +10,15 @@ var Composer = React.createClass({
   },
 
   render: function() {
+    var placeholder = "Write your " + this.props.type;
     return (
-      <div>
-        <input
-          type="text"
-          value={this.state.text}
-          onChange={this._onChange}
-          onKeyDown={this._onKeyDown} />
-      </div>
+      <input
+        className={this.props.type + "-composer"}
+        placeholder={placeholder}
+        type="text"
+        value={this.state.text}
+        onChange={this._onChange}
+        onKeyDown={this._onKeyDown} />
     );
   },
 

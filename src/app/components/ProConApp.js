@@ -5,11 +5,13 @@ var ProConApp = React.createClass({
 
   render: function() {
     return (
-      <div className="app">
-        <section>
+      <div id="proconapp">
+        <section className="pros">
+          <h1>Pros</h1>
           <ProConSection type="pros" />
         </section>
-        <section>
+        <section className="cons">
+          <h1>Cons</h1>
           <ProConSection type="cons" />
         </section>
       </div>
