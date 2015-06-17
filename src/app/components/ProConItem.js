@@ -22,17 +22,21 @@ var ProConItem = React.createClass({
 
   render: function() {
     return (
-      <li
-        onClick={this._onClick}
-        className={this._getWeightClass()}>
-          {this.state.item.text}
+      <li className={this._getWeightClass()}>
+        <a onClick={this._delete}><i className="ion-close"></i></a>
+        <div onClick={this._changeWeight}>{this.state.item.text}</div>
       </li>
     );
   },
 
   // Handles changing the weight of the item
-  _onClick: function() {
+  _changeWeight: function() {
     Actions.changeItemWeight(this.props.id, this.props.type);
+  },
+
+  // Calls the delete for an item
+  _delete: function() {
+    Actions.deleteItem(this.props.id, this.props.type);
   },
 
   _onChange: function() {

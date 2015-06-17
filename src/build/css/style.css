@@ -26,12 +26,35 @@ li {
   cursor: pointer;
 }
 
-li.two {
+li.two div {
   font-style: italic;
 }
 
-li.three {
+li.three div {
   font-weight: bold;
+}
+
+ul div {
+  display: inline;
+}
+
+ul a {
+  display: none;
+  font-size: 15px;
+  color: #aaa;
+}
+
+ul li:hover a {
+  display: inline;
+  line-height: 2.5;
+}
+
+.pros ul li a {
+  float: left;
+}
+
+.cons ul li a {
+  float: right;
 }
 
 input {
@@ -84,4 +107,12 @@ span {
 
 .pros input {
   text-align: right;
+}
+
+#instructions {
+  position: absolute;
+  font-size: 12px;
+  color: #aaa;
+  margin-left: 15px;
+  line-height: 1.6;
 }
