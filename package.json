@@ -14,24 +14,19 @@
   "devDependencies": {
     "browserify": "^6.2.0",
     "envify": "^3.0.0",
-    "jest-cli": "^0.4.3",
     "reactify": "^0.15.2",
     "watchify": "^2.1.1"
   },
   "scripts": {
     "start": "node src/server.js",
     "build": "browserify src/app/App.js > src/build/js/bundle.js",
-    "watch": "watchify src/app/App.js -o src/build/js/bundle.js",
-    "test": "jest"
+    "watch": "watchify src/app/App.js -o src/build/js/bundle.js"
   },
   "browserify": {
     "transform": [
       "reactify",
       "envify"
     ]
-  },
-  "jest": {
-    "rootDir": "./src"
   },
   "author": "Billy Ceskavich",
   "license": "ISC"
