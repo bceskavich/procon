@@ -31,10 +31,6 @@ li {
 }
 
 li.two div {
-  font-style: italic;
-}
-
-li.three div {
   font-weight: bold;
 }
 
@@ -113,14 +109,11 @@ span {
   text-align: right;
 }
 
-.clear a,
 .clear a {
   color: #aaa;
-  border: 2px solid #aaa;
-  border-radius: 5px;
-  padding: 2.5px 5px;
   font-size: 15px;
   cursor: pointer;
+  text-decoration: underline;
 }
 
 #instructions {
@@ -129,5 +122,9 @@ span {
   color: #aaa;
   margin-left: 15px;
   line-height: 1.6;
+}
+
+#instructions p a {
+  color: #aaa;
 }
 

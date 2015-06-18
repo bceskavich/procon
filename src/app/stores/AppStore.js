@@ -57,7 +57,7 @@ function _deleteAllOfType(type) {
  */
 function _changeWeight(id, type) {
   var item = _items[type][id];
-  if (item.weight >= 3) {
+  if (item.weight >= 2) {
     item.weight = 1;
   } else {
     item.weight += 1;
