@@ -34,5 +34,19 @@ module.exports = {
       type: ActionTypes.DELETE_ALL,
       itemType: itemType
     });
+  },
+
+  createNewStore: function() {
+    Dispatcher.dispatch({
+      type: ActionTypes.CREATE_NEW_STORE
+    });
+  },
+
+  loadPage: function(data, ref) {
+    Dispatcher.dispatch({
+      type: ActionTypes.LOAD_PAGE,
+      data: data,
+      ref: ref
+    });
   }
 };

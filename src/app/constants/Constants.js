@@ -12,6 +12,8 @@ module.exports = {
     CREATE_ITEM: null,
     DELETE_ITEM: null,
     CHANGE_WEIGHT: null,
-    DELETE_ALL: null
+    DELETE_ALL: null,
+    CREATE_NEW_STORE: null,
+    LOAD_PAGE: null
   })
 };

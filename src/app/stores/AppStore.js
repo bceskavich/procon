@@ -7,20 +7,19 @@
 
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var Constants = require('../constants/Constants.js');
+var FirebaseUtils = require('../utils/FirebaseUtil');
 var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
 
 var ActionTypes = Constants.ActionTypes;
 var CHANGE_EVENT = 'change';
 
-/**
- * Store object of format:
- * pros: {}, cons: {}
- */
+// Stores
 var _items = {
   pros: {},
   cons: {}
 };
+var _firebaseRef;
 
 /**
  * Adds a new item to the private store
@@ -35,7 +34,13 @@ function _createNewItem(text, type) {
     type: type,
     weight: 1
   };
+
   _items[type][id] = item;
+
+  // If saved to Firebase, add new data to it
+  if (_firebaseRef) {
+    FirebaseUtils.saveToStore(_firebaseRef, _items);
+  }
 }
 
 /**
@@ -65,6 +70,13 @@ function _changeWeight(id, type) {
   _items[type][id] = item;
 }
 
+// Updates Firebase store if extant
+function _updateFB() {
+  if (_firebaseRef) {
+    FirebaseUtils.saveToStore(_firebaseRef, _items);
+  }
+}
+
 var AppStore = assign({}, EventEmitter.prototype, {
 
   emitChange: function() {
@@ -86,6 +98,15 @@ var AppStore = assign({}, EventEmitter.prototype, {
     return _items[type][id];
   },
 
+  // Gets and returns the firebase reference ID, if it exists
+  getFirebaseRef: function() {
+    if (_firebaseRef) {
+      return _firebaseRef;
+    } else {
+      return null;
+    }
+  },
+
   /**
    * Gets and returns items of provided type
    */
@@ -104,7 +125,6 @@ var AppStore = assign({}, EventEmitter.prototype, {
     items.sort(function(a,b) {
       return a.date - b.date;
     });
-    console.log(items);
     return items;
   }
 });
@@ -113,25 +133,41 @@ AppStore.dispatchToekn = AppDispatcher.register(function(action) {
 
   switch(action.type) {
 
+    case ActionTypes.LOAD_PAGE:
+      _items = action.data;
+      _firebaseRef = action.ref;
+      console.log(_firebaseRef);
+      AppStore.emitChange();
+      break;
+
     case ActionTypes.CREATE_ITEM:
       _createNewItem(action.text, action.itemType);
+      _updateFB();
       AppStore.emitChange();
       break;
 
     case ActionTypes.DELETE_ITEM:
       _deleteItem(action.id, action.itemType);
+      _updateFB();
       AppStore.emitChange();
       break;
 
     case ActionTypes.CHANGE_WEIGHT:
       _changeWeight(action.id, action.itemType);
+      _updateFB();
       AppStore.emitChange();
       break;
 
     case ActionTypes.DELETE_ALL:
       _deleteAllOfType(action.itemType);
+      _updateFB();
       AppStore.emitChange();
       break;
+
+    case ActionTypes.CREATE_NEW_STORE:
+      var id = FirebaseUtils.createNewStore(_items);
+      _firebaseRef = id;
+      AppStore.emitChange();
 
     default:
       // Nothing
