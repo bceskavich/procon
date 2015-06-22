@@ -1,6 +1,8 @@
 var Firebase = require("firebase");
 var Actions = require("../actions/Actions");
 
+var basePath = "https://procon.firebaseio.com/";
+
 module.exports = {
 
   /**
@@ -11,7 +13,7 @@ module.exports = {
   createNewStore: function(data) {
     // Generate a random alphnumeric ID
     var id = Math.random().toString(36).substr(2,20);
-    var firebasePath = "https://brilliant-heat-673.firebaseio.com/" + id;
+    var firebasePath = basePath + id;
     var ref = new Firebase(firebasePath);
     ref.set(data);
 
@@ -24,7 +26,7 @@ module.exports = {
    * @return {object} data -- The saved pros / cons
    */
   loadFromStore: function(id) {
-    var firebasePath = "https://brilliant-heat-673.firebaseio.com/" + id;
+    var firebasePath = basePath + id;
     var ref = new Firebase(firebasePath);
 
     var data;
@@ -44,7 +46,7 @@ module.exports = {
    * @param {object} data -- The data to be set
    */
   saveToStore: function(id, data) {
-    var firebasePath = "https://brilliant-heat-673.firebaseio.com/" + id;
+    var firebasePath = basePath + id;
     var ref = new Firebase(firebasePath);
     ref.set(data);
   },
