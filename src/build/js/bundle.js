@@ -19862,7 +19862,6 @@ var ProConSection = React.createClass({displayName: "ProConSection",
     } else {
       clear = '';
     }
-    console.log(clear);
     return (
       React.createElement("div", {className: this.props.type + "-section"}, 
         React.createElement(Composer, {type: this.props.type}), 
@@ -20050,7 +20049,6 @@ AppStore.dispatchToekn = AppDispatcher.register(function(action) {
     case ActionTypes.LOAD_PAGE:
       _items = action.data;
       _firebaseRef = action.ref;
-      console.log(_firebaseRef);
       AppStore.emitChange();
       break;
 
@@ -20106,7 +20104,6 @@ module.exports = {
     var id = Math.random().toString(36).substr(2,20);
     var firebasePath = "https://brilliant-heat-673.firebaseio.com/" + id;
     var ref = new Firebase(firebasePath);
-    console.log("setting");
     ref.set(data);
 
     return id;

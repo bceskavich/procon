@@ -13,7 +13,6 @@ module.exports = {
     var id = Math.random().toString(36).substr(2,20);
     var firebasePath = "https://brilliant-heat-673.firebaseio.com/" + id;
     var ref = new Firebase(firebasePath);
-    console.log("setting");
     ref.set(data);
 
     return id;

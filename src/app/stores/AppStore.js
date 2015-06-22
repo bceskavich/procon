@@ -136,7 +136,6 @@ AppStore.dispatchToekn = AppDispatcher.register(function(action) {
     case ActionTypes.LOAD_PAGE:
       _items = action.data;
       _firebaseRef = action.ref;
-      console.log(_firebaseRef);
       AppStore.emitChange();
       break;
 

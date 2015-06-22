@@ -49,7 +49,6 @@ var ProConSection = React.createClass({
     } else {
       clear = '';
     }
-    console.log(clear);
     return (
       <div className={this.props.type + "-section"}>
         <Composer type={this.props.type} />
