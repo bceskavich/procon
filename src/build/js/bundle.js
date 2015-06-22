@@ -19704,28 +19704,43 @@ var AppStore = require('../stores/AppStore');
 var Actions = require('../actions/Actions');
 var React = require('React');
 
-function getFirebaseState() {
+function getStateFromStore() {
   return {
-    ref: AppStore.getFirebaseRef()
+    ref: AppStore.getFirebaseRef(),
+    pros: AppStore.getAllChrono("pros"),
+    cons: AppStore.getAllChrono("cons")
   };
 }
 
 var ProConApp = React.createClass({displayName: "ProConApp",
 
   getInitialState: function() {
-    return getFirebaseState();
+    return getStateFromStore();
+  },
+
+  componentDidMount: function() {
+    AppStore.addChangeListener(this._onChange);
+  },
+
+  componentWillUnmount: function() {
+    AppStore.removeChangeListener(this._onChange);
   },
 
   render: function() {
-    var buttonOrLink;
     if (this.state.ref) {
-      buttonOrLink = "http://procon.ceskavich.com/" + this.state.ref;
+      var linkPath = "http://procon.ceskavich.com/" + this.state.ref;
+      buttonOrLink = React.createElement("a", {href: linkPath}, linkPath);
+    } else if (this.state.pros.length > 0 || this.state.cons.length > 0) {
+      buttonOrLink = React.createElement("button", {className: "active", onClick: this._saveSession}, "Save Your List");
     } else {
-      buttonOrLink = React.createElement("button", {onClick: this._saveSession}, "Save Your List");
+      buttonOrLink = React.createElement("button", {disabled: true, onClick: this._saveSession}, "Save Your List");
     }
 
     return (
       React.createElement("div", null, 
+        React.createElement("div", {className: "save"}, 
+          buttonOrLink
+        ), 
         React.createElement("section", {className: "pros"}, 
           React.createElement("h1", null, "Pros"), 
           React.createElement(ProConSection, {type: "pros"})
@@ -19734,14 +19749,16 @@ var ProConApp = React.createClass({displayName: "ProConApp",
         React.createElement("section", {className: "cons"}, 
           React.createElement("h1", null, "Cons"), 
           React.createElement(ProConSection, {type: "cons"})
-        ), 
-        buttonOrLink
+        )
       )
     );
   },
 
+  _onChange: function() {
+    this.setState(getStateFromStore());
+  },
+
   _saveSession: function() {
-    console.log("Creating.");
     Actions.createNewStore();
   }
 

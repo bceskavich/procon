@@ -3,28 +3,43 @@ var AppStore = require('../stores/AppStore');
 var Actions = require('../actions/Actions');
 var React = require('React');
 
-function getFirebaseState() {
+function getStateFromStore() {
   return {
-    ref: AppStore.getFirebaseRef()
+    ref: AppStore.getFirebaseRef(),
+    pros: AppStore.getAllChrono("pros"),
+    cons: AppStore.getAllChrono("cons")
   };
 }
 
 var ProConApp = React.createClass({
 
   getInitialState: function() {
-    return getFirebaseState();
+    return getStateFromStore();
+  },
+
+  componentDidMount: function() {
+    AppStore.addChangeListener(this._onChange);
+  },
+
+  componentWillUnmount: function() {
+    AppStore.removeChangeListener(this._onChange);
   },
 
   render: function() {
-    var buttonOrLink;
     if (this.state.ref) {
-      buttonOrLink = "http://procon.ceskavich.com/" + this.state.ref;
+      var linkPath = "http://procon.ceskavich.com/" + this.state.ref;
+      buttonOrLink = <a href={linkPath}>{linkPath}</a>;
+    } else if (this.state.pros.length > 0 || this.state.cons.length > 0) {
+      buttonOrLink = <button className="active" onClick={this._saveSession}>Save Your List</button>;
     } else {
-      buttonOrLink = <button onClick={this._saveSession}>Save Your List</button>;
+      buttonOrLink = <button disabled onClick={this._saveSession}>Save Your List</button>;
     }
 
     return (
       <div>
+        <div className="save">
+          {buttonOrLink}
+        </div>
         <section className="pros">
           <h1>Pros</h1>
           <ProConSection type="pros" />
@@ -34,13 +49,15 @@ var ProConApp = React.createClass({
           <h1>Cons</h1>
           <ProConSection type="cons" />
         </section>
-        {buttonOrLink}
       </div>
     );
   },
 
+  _onChange: function() {
+    this.setState(getStateFromStore());
+  },
+
   _saveSession: function() {
-    console.log("Creating.");
     Actions.createNewStore();
   }
 

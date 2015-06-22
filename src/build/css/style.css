@@ -128,3 +128,27 @@ span {
   color: #aaa;
 }
 
+.save {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 15px;
+}
+
+.save a {
+  color: #333;
+}
+
+.save button {
+  padding: 5px;
+  margin: 0px;
+  border: 2px solid #333;
+  border-radius: 5px;
+  background-color: #fff;
+  font-family: "Avenir", "Helvetica Neue", "Helvetica", sans serif;
+}
+
+.save button:disabled {
+  border: 2px solid #aaa;
+  color: #aaa;
+}
+
