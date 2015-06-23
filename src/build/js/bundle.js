@@ -19910,7 +19910,7 @@ module.exports = ProConSection;
  * DATE - 6/16/15
  */
 
-var  keyMirror = require("keyMirror");
+var keyMirror = require("keymirror");
 
 module.exports = {
   ActionTypes: keyMirror({
@@ -19923,7 +19923,7 @@ module.exports = {
   })
 };
 
-},{"keyMirror":153}],308:[function(require,module,exports){
+},{"keymirror":153}],308:[function(require,module,exports){
 var Dispatcher = require('flux').Dispatcher;
 module.exports = new Dispatcher();
 
