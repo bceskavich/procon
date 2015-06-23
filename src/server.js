@@ -13,12 +13,10 @@ app.get('/', function(req, res){
   res.sendFile(path.resolve(__dirname, './views/index.html'));
 });
 
-/*
 // Index w/ ID (save URL)
 app.get('/:id', function(req, res, next){
   res.sendFile(path.resolve(__dirname, './views/index.html'));
 });
-*/
 
 server = app.listen(process.env.PORT || 8080, function(){
   var port = server.address().port;

@@ -5,7 +5,7 @@
  * DATE - 6/16/15
  */
 
-var  keyMirror = require("keyMirror");
+var keyMirror = require("keymirror");
 
 module.exports = {
   ActionTypes: keyMirror({
