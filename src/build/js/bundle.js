@@ -19738,17 +19738,19 @@ var ProConApp = React.createClass({displayName: "ProConApp",
 
     return (
       React.createElement("div", null, 
+        React.createElement("div", null, 
+          React.createElement("section", {className: "pros"}, 
+            React.createElement("h1", null, "Pros"), 
+            React.createElement(ProConSection, {type: "pros"})
+          ), 
+          React.createElement("span", null), 
+          React.createElement("section", {className: "cons"}, 
+            React.createElement("h1", null, "Cons"), 
+            React.createElement(ProConSection, {type: "cons"})
+          )
+        ), 
         React.createElement("div", {className: "save"}, 
           buttonOrLink
-        ), 
-        React.createElement("section", {className: "pros"}, 
-          React.createElement("h1", null, "Pros"), 
-          React.createElement(ProConSection, {type: "pros"})
-        ), 
-        React.createElement("span", null), 
-        React.createElement("section", {className: "cons"}, 
-          React.createElement("h1", null, "Cons"), 
-          React.createElement(ProConSection, {type: "cons"})
         )
       )
     );

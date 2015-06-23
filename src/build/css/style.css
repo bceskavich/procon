@@ -130,8 +130,9 @@ span {
 
 .save {
   text-align: center;
-  margin-bottom: 20px;
+  padding-top: 25px;
   font-size: 15px;
+  clear: both;
 }
 
 .save a {
@@ -139,16 +140,17 @@ span {
 }
 
 .save button {
+  cursor: pointer;
   padding: 5px;
   margin: 0px;
-  border: 2px solid #333;
+  border: 2px solid #aaa;
   border-radius: 5px;
   background-color: #fff;
+  color: #aaa;
   font-family: "Avenir", "Helvetica Neue", "Helvetica", sans serif;
 }
 
 .save button:disabled {
-  border: 2px solid #aaa;
-  color: #aaa;
+  display:none;
 }
 

@@ -37,18 +37,20 @@ var ProConApp = React.createClass({
 
     return (
       <div>
+        <div>
+          <section className="pros">
+            <h1>Pros</h1>
+            <ProConSection type="pros" />
+          </section>
+          <span></span>
+          <section className="cons">
+            <h1>Cons</h1>
+            <ProConSection type="cons" />
+          </section>
+        </div>
         <div className="save">
           {buttonOrLink}
         </div>
-        <section className="pros">
-          <h1>Pros</h1>
-          <ProConSection type="pros" />
-        </section>
-        <span></span>
-        <section className="cons">
-          <h1>Cons</h1>
-          <ProConSection type="cons" />
-        </section>
       </div>
     );
   },
