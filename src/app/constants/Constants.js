@@ -1,19 +1,6 @@
-/*
- * Constants for ProCon
- *
- * AUTHOR - Billy Ceskavich
- * DATE - 6/16/15
- */
-
-var keyMirror = require("keymirror");
-
-module.exports = {
-  ActionTypes: keyMirror({
-    CREATE_ITEM: null,
-    DELETE_ITEM: null,
-    CHANGE_WEIGHT: null,
-    DELETE_ALL: null,
-    CREATE_NEW_STORE: null,
-    LOAD_PAGE: null
-  })
-};
+export const CREATE_ITEM = 'CREATE_ITEM';
+export const DELETE_ITEM = 'DELETE_ITEM';
+export const CHANGE_WEIGHT = 'CHANGE_WEIGHT';
+export const DELETE_ALL = 'DELETE_ALL';
+export const CREATE_NEW_STORE = 'CREATE_NEW_STORE';
+export const LOAD_PAGE = 'LOAD_PAGE';

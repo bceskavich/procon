@@ -1,52 +1,46 @@
-var Constants = require('../constants/Constants');
-var Dispatcher = require('../dispatcher/AppDispatcher');
+import * as ActionTypes from '../constants/ActionTypes';
 
-var ActionTypes = Constants.ActionTypes;
+export function createItem(text, itemType) {
+  return {
+    type: ActionTypes.CREATE_ITEM,
+    itemType: itemType,
+    text: text
+  };
+}
 
-module.exports = {
+export function deleteItem(id, itemType) {
+  return {
+    type: ActionTypes.DELETE_ITEM,
+    id: id,
+    itemType: itemType
+  };
+}
 
-  createItem: function(text, itemType) {
-    Dispatcher.dispatch({
-      type: ActionTypes.CREATE_ITEM,
-      itemType: itemType,
-      text: text
-    });
-  },
+export function changeItemWeight(id, itemType) {
+  return {
+    type: ActionTypes.CHANGE_WEIGHT,
+    itemType: itemType,
+    id: id
+  };
+}
 
-  deleteItem: function(id, itemType) {
-    Dispatcher.dispatch({
-      type: ActionTypes.DELETE_ITEM,
-      id: id,
-      itemType: itemType
-    });
-  },
+export function deleteAll(itemType) {
+  return {
+    type: ActionTypes.DELETE_ALL,
+    itemType: itemType
+  };
+}
 
-  changeItemWeight: function(id, itemType) {
-    Dispatcher.dispatch({
-      type: ActionTypes.CHANGE_WEIGHT,
-      itemType: itemType,
-      id: id
-    });
-  },
+export function createNewStore() {
+  return {
+    type: ActionTypes.CREATE_NEW_STORE
+  };
+}
 
-  deleteAll: function(itemType) {
-    Dispatcher.dispatch({
-      type: ActionTypes.DELETE_ALL,
-      itemType: itemType
-    });
-  },
-
-  createNewStore: function() {
-    Dispatcher.dispatch({
-      type: ActionTypes.CREATE_NEW_STORE
-    });
-  },
-
-  loadPage: function(data, ref) {
-    Dispatcher.dispatch({
-      type: ActionTypes.LOAD_PAGE,
-      data: data,
-      ref: ref
-    });
-  }
-};
+export function loadPage(data, ref) {
+  return {
+    type: ActionTypes.LOAD_PAGE,
+    data: data,
+    ref: ref
+  };
+}
