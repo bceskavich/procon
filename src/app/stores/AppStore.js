@@ -1,176 +1,106 @@
-/**
- * AppStore - Handles both pros & cons since they share all qualities
- *
- * AUTHOR - Billy Ceskavich
- * DATE - 6/16/15
- */
+import alt from '../alt';
+import PCActions from '../actions/Actions';
+import FirebaseUtils from '../utils/FirebaseUtil';
 
-var AppDispatcher = require('../dispatcher/AppDispatcher');
-var Constants = require('../constants/Constants.js');
-var FirebaseUtils = require('../utils/FirebaseUtil');
-var EventEmitter = require('events').EventEmitter;
-var assign = require('object-assign');
-
-var ActionTypes = Constants.ActionTypes;
-var CHANGE_EVENT = 'change';
-
-// Stores
-var _items = {
-  pros: {},
-  cons: {}
+// Store Structure
+const stores = {
+  items: {
+    pros: {},
+    cons: {}
+  },
+  firebaseRef: null
 };
-var _firebaseRef;
 
-/**
- * Adds a new item to the private store
- */
-function _createNewItem(text, type) {
-  var id = Math.random().toString(36).substring(10);
-  var timestamp = Date.now();
-  var item = {
-    id: id,
-    date: timestamp,
-    text: text,
-    type: type,
-    weight: 1
-  };
+class AppStore {
 
-  _items[type][id] = item;
+  constructor() {
+    this.bindActions(PCActions);
 
-  // If saved to Firebase, add new data to it
-  if (_firebaseRef) {
-    FirebaseUtils.saveToStore(_firebaseRef, _items);
+    this.items = {
+      pros: {},
+      cons: {}
+    };
+    this.firebaseRef = null;
   }
-}
 
-/**
- * Deletes an item from our store
- */
-function _deleteItem(id, type) {
-  delete _items[type][id];
-}
-
-/**
- * Deletes all items from our store of given type
- */
-function _deleteAllOfType(type) {
-  _items[type] = {};
-}
-
-/**
- * Increments (or resets) the weight of an item
- */
-function _changeWeight(id, type) {
-  var item = _items[type][id];
-  if (item.weight >= 2) {
-    item.weight = 1;
-  } else {
-    item.weight += 1;
+  // Updates Firebase store if extant
+  updateFB() {
+    if (this.firebaseRef) {
+      FirebaseUtils.saveToStore(this.firebaseRef, this.items);
+    }
   }
-  _items[type][id] = item;
-}
 
-// Updates Firebase store if extant
-function _updateFB() {
-  if (_firebaseRef) {
-    FirebaseUtils.saveToStore(_firebaseRef, _items);
+  onCreateItem(item) {
+    const id = Math.random().toString(36).substring(10);
+    const timestamp = Date.now();
+    var item = {
+      id: id,
+      date: timestamp,
+      text: item.text,
+      type: item.type,
+      weight: 1
+    };
+
+    this.items[item.type][id] = item;
+    this.updateFB();
   }
-}
 
-var AppStore = assign({}, EventEmitter.prototype, {
+  onDeleteItem(item) {
+    delete this.items[item.type][item.id];
+    this.updateFB();
+  }
 
-  emitChange: function() {
-    this.emit(CHANGE_EVENT);
-  },
+  onChangeWeight(item) {
+    var myItem = this.items[item.type][item.id];
+    if (myItem.weight >= 2) {
+      myItem.weight = 1;
+    } else {
+      myItem.weight += 1;
+    }
+    this.items[item.type][item.id] = myItem;
+  }
 
-  addChangeListener: function(callback) {
-    this.on(CHANGE_EVENT, callback);
-  },
+  onDeleteAll(type) {
+    this.items[type] = {};
+  }
 
-  removeChangeListener: function(callback) {
-    this.removeListener(CHANGE_EVENT, callback);
-  },
+  onCreateNewStore() {
+    const id = FirebaseUtils.createNewStore(this.items);
+    this.firebaseRef = id;
+  }
 
-  /**
-   * Gets and returns item of ID & type
-   */
-  getItem: function(id, type) {
-    return _items[type][id];
-  },
+  onLoadPage(payload) {
+    this.items = payload.data;
+    this.firebaseRef = payload.ref;
+  }
 
-  // Gets and returns the firebase reference ID, if it exists
-  getFirebaseRef: function() {
-    if (_firebaseRef) {
-      return _firebaseRef;
+  static getItem(id, type) {
+    return this.items[type][id];
+  }
+
+  static getFirebaseRef() {
+    if (this.firebaseRef) {
+      return firebaseRef;
     } else {
       return null;
     }
-  },
+  }
 
-  /**
-   * Gets and returns items of provided type
-   */
-  getAllOfType: function(type) {
-    return _items[type];
-  },
+  static getAllOfType(type) {
+    return this.items[type];
+  }
 
-  /**
-   * Gets all of given type, ordered by creation
-   */
-  getAllChrono: function(type) {
+  static getAllChrono(type) {
     var items = [];
-    for (var id in _items[type]) {
-      items.push(_items[type][id]);
+    for (var id in this.items[type]) {
+      items.push(this.items[type][id]);
     }
-    items.sort(function(a,b) {
+    items.sort((a,b) => {
       return a.date - b.date;
     });
     return items;
   }
-});
 
-AppStore.dispatchToekn = AppDispatcher.register(function(action) {
+}
 
-  switch(action.type) {
-
-    case ActionTypes.LOAD_PAGE:
-      _items = action.data;
-      _firebaseRef = action.ref;
-      AppStore.emitChange();
-      break;
-
-    case ActionTypes.CREATE_ITEM:
-      _createNewItem(action.text, action.itemType);
-      _updateFB();
-      AppStore.emitChange();
-      break;
-
-    case ActionTypes.DELETE_ITEM:
-      _deleteItem(action.id, action.itemType);
-      _updateFB();
-      AppStore.emitChange();
-      break;
-
-    case ActionTypes.CHANGE_WEIGHT:
-      _changeWeight(action.id, action.itemType);
-      _updateFB();
-      AppStore.emitChange();
-      break;
-
-    case ActionTypes.DELETE_ALL:
-      _deleteAllOfType(action.itemType);
-      _updateFB();
-      AppStore.emitChange();
-      break;
-
-    case ActionTypes.CREATE_NEW_STORE:
-      var id = FirebaseUtils.createNewStore(_items);
-      _firebaseRef = id;
-      AppStore.emitChange();
-
-    default:
-      // Nothing
-  }
-});
-
-module.exports = AppStore;
+export default alt.createStore(AppStore, 'AppStore');
