@@ -1,21 +1,14 @@
-var ProConItem = require('./ProConItem');
-var Composer = require('./Composer');
-var AppStore = require('../stores/AppStore');
-var Actions = require('../actions/Actions');
-var React = require('react');
-
-function getStateFromStores(type) {
-  return {
-    items: AppStore.getAllChrono(type)
-  };
-}
+import ProConItem from './ProConItem';
+import Composer from './Composer';
+import Actions from '../actions/Actions';
+import React, { Component, PropTypes } from 'react';
 
 function getItemList(items) {
   if (!items) {
     return '';
   }
   var itemList = items.map(function(item){
-    return <ProConItem id={item.id} type={item.type} key={item.id} />;
+    return <ProConItem key={item.id} item={item} />;
   });
   return (
     <ul>
@@ -28,23 +21,16 @@ function getClearButton(handler) {
   return <a onClick={handler}>Clear All</a>;
 }
 
-var ProConSection = React.createClass({
+class ProConSection extends Component {
 
-  getInitialState: function() {
-    return getStateFromStores(this.props.type);
-  },
+  constructor(props, context) {
+    super(props, context);
+    this._clearAll = this._clearAll.bind(this);
+  }
 
-  componentDidMount: function() {
-    AppStore.addChangeListener(this._onChange);
-  },
-
-  componentWillUnmount: function() {
-    AppStore.removeChangeListener(this._onChange);
-  },
-
-  render: function() {
+  render() {
     var clear;
-    if (this.state.items.length > 0) {
+    if (this.props.items.length > 0) {
       clear = getClearButton(this._clearAll);
     } else {
       clear = '';
@@ -52,22 +38,22 @@ var ProConSection = React.createClass({
     return (
       <div className={this.props.type + "-section"}>
         <Composer type={this.props.type} />
-        {getItemList(this.state.items)}
+          {getItemList(this.state.items)}
         <div className="clear">
           {clear}
         </div>
       </div>
     );
-  },
+  }
 
-  // Event handler
-  _onChange: function() {
-    this.setState(getStateFromStores(this.props.type));
-  },
-
-  _clearAll: function() {
+  _clearAll() {
     Actions.deleteAll(this.props.type);
   }
-});
+}
 
-module.exports = ProConSection;
+ProConSection.propTypes = {
+  type: PropTypes.string.isRequired,
+  items: PropTypes.object.isRequired
+};
+
+export default ProConSection;

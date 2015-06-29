@@ -1,50 +1,36 @@
-var Actions = require('../actions/Actions');
-var AppStore = require('../stores/AppStore');
-var React = require('react');
+import Actions from '../actions/Actions';
+import React, { Component } from 'react';
 
-function getItemFromStore(id, type) {
-  return {item: AppStore.getItem(id, type)};
-}
+export default class ProConItem extends Component {
 
-var ProConItem = React.createClass({
+  constructor(props, context) {
+    super(props, context);
+    this._changeWeight = this._changeWeight.bind(this);
+    this._delete = this._delete.bind(this);
+    this._getWeightClass = this._getWeightClass.bind(this);
+  }
 
-  getInitialState: function() {
-    return getItemFromStore(this.props.id, this.props.type);
-  },
-
-  componentDidMount: function() {
-    AppStore.addChangeListener(this._onChange);
-  },
-
-  componentWillUnmount: function() {
-    AppStore.removeChangeListener(this._onChange);
-  },
-
-  render: function() {
+  render() {
     return (
       <li className={this._getWeightClass()}>
         <a onClick={this._delete}><i className="ion-close"></i></a>
-        <div onClick={this._changeWeight}>{this.state.item.text}</div>
+        <div onClick={this._changeWeight}>{this.props.item.text}</div>
       </li>
     );
-  },
+  }
 
   // Handles changing the weight of the item
-  _changeWeight: function() {
-    Actions.changeItemWeight(this.props.id, this.props.type);
-  },
+  _changeWeight() {
+    Actions.changeItemWeight(this.props.item.id, this.props.item.type);
+  }
 
   // Calls the delete for an item
-  _delete: function() {
-    Actions.deleteItem(this.props.id, this.props.type);
-  },
+  _delete() {
+    Actions.deleteItem(this.props.item.id, this.props.item.type);
+  }
 
-  _onChange: function() {
-    this.setState(getItemFromStore(this.props.id, this.props.type));
-  },
-
-  _getWeightClass: function() {
-    var weight = this.state.item.weight;
+  _getWeightClass() {
+    const weight = this.props.item.weight;
     if (weight == 1) {
       return "one";
     } else if (weight == 2) {
@@ -53,7 +39,5 @@ var ProConItem = React.createClass({
       return "three";
     }
   }
+}
 
-});
-
-module.exports = ProConItem;

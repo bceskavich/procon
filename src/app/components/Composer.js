@@ -1,16 +1,19 @@
-var Actions = require('../actions/Actions');
-var React = require('react');
+import Actions from '../actions/Actions';
+import React, { Component } from 'react';
 
-var ENTER_KEY_CODE = 13;
+const ENTER_KEY_CODE = 13;
 
-var Composer = React.createClass({
+export default class Composer extends Component {
 
-  getInitialState: function() {
-    return {text: ''};
-  },
+  constructor(props, context) {
+    super(props, context);
+    this.state = {text: ''};
+    this._onChange = this._onChange.bind(this);
+    this._onKeyDown = this._onKeyDown.bind(this);
+  }
 
-  render: function() {
-    var placeholder = "Write your " + this.props.type;
+  render() {
+    const placeholder = "Write your " + this.props.type;
     return (
       <input
         className={this.props.type + "-composer"}
@@ -20,23 +23,20 @@ var Composer = React.createClass({
         onChange={this._onChange}
         onKeyDown={this._onKeyDown} />
     );
-  },
+  }
 
-  _onChange: function(event) {
+  _onChange(event) {
     this.setState({text: event.target.value});
-  },
+  }
 
-  _onKeyDown: function(event) {
+  _onKeyDown(event) {
     if (event.keyCode === ENTER_KEY_CODE) {
       event.preventDefault();
       var text = this.state.text.trim();
       if (text) {
         Actions.createItem(text, this.props.type);
       }
-      this.setState({text: ""});
+      this.setState({text: ''});
     }
   }
-
-});
-
-module.exports = Composer;
+}

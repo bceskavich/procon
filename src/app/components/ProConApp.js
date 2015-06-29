@@ -1,31 +1,36 @@
-var ProConSection = require('./ProConSection');
-var AppStore = require('../stores/AppStore');
-var Actions = require('../actions/Actions');
+import ProConSection from './ProConSection';
+import AppStore from '../stores/AppStore';
+import PCActions from '../actions/Actions';
 import React from 'react';
 
 function getStateFromStore() {
   return {
-    ref: AppStore.getFirebaseRef(),
-    pros: AppStore.getAllChrono("pros"),
-    cons: AppStore.getAllChrono("cons")
+    ref: AppStore.getState().firebaseRef,
+    pros: AppStore.getState().pros,
+    cons: AppStore.getState().cons
   };
 }
 
-var ProConApp = React.createClass({
+export default class ProConApp extends React.Component {
 
-  getInitialState: function() {
-    return getStateFromStore();
-  },
+  constructor(props, context) {
+    super(props, context);
+    this.state = getStateFromStore();
 
-  componentDidMount: function() {
-    AppStore.addChangeListener(this._onChange);
-  },
+    this._onChange = this._onChange.bind(this);
+    this._saveSession = this._saveSession.bind(this);
+  }
 
-  componentWillUnmount: function() {
-    AppStore.removeChangeListener(this._onChange);
-  },
+  componentDidMount() {
+    AppStore.listen(this._onChange);
+  }
 
-  render: function() {
+  componentWillUnmount() {
+    AppStore.unlisten(this._onChange);
+  }
+
+  render() {
+    var buttonOrLink;
     if (this.state.ref) {
       var linkPath = "http://procon.ceskavich.com/" + this.state.ref;
       buttonOrLink = <a href={linkPath}>{linkPath}</a>;
@@ -40,12 +45,12 @@ var ProConApp = React.createClass({
         <div>
           <section className="pros">
             <h1>Pros</h1>
-            <ProConSection type="pros" />
+            <ProConSection type="pros" items={AppStore.getAllChrono('pros')} />
           </section>
           <span></span>
           <section className="cons">
             <h1>Cons</h1>
-            <ProConSection type="cons" />
+            <ProConSection type="cons" items={AppStore.getAllChrono('cons')} />
           </section>
         </div>
         <div className="save">
@@ -53,16 +58,14 @@ var ProConApp = React.createClass({
         </div>
       </div>
     );
-  },
-
-  _onChange: function() {
-    this.setState(getStateFromStore());
-  },
-
-  _saveSession: function() {
-    Actions.createNewStore();
   }
 
-});
+  _onChange() {
+    this.setState(getStateFromStore());
+  }
 
-module.exports = ProConApp;
+  _saveSession() {
+    PCActions.createNewStore();
+  }
+
+}
