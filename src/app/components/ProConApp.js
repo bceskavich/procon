@@ -1,7 +1,7 @@
 var ProConSection = require('./ProConSection');
 var AppStore = require('../stores/AppStore');
 var Actions = require('../actions/Actions');
-var React = require('React');
+import React from 'react';
 
 function getStateFromStore() {
   return {
