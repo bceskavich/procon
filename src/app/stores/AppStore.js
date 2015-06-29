@@ -2,15 +2,6 @@ import alt from '../alt';
 import PCActions from '../actions/Actions';
 import FirebaseUtils from '../utils/FirebaseUtil';
 
-// Store Structure
-const stores = {
-  items: {
-    pros: {},
-    cons: {}
-  },
-  firebaseRef: null
-};
-
 class AppStore {
 
   constructor() {
