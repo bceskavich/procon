@@ -1,5 +1,4 @@
 import alt from '../alt';
-import AppStore from '../stores/AppStore';
 
 class PCActions {
 

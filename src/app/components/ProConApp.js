@@ -1,13 +1,13 @@
 import ProConSection from './ProConSection';
 import AppStore from '../stores/AppStore';
-import PCActions from '../actions/Actions';
+import PCActions from '../actions/PCActions';
 import React from 'react';
 
 function getStateFromStore() {
   return {
     ref: AppStore.getState().firebaseRef,
-    pros: AppStore.getState().pros,
-    cons: AppStore.getState().cons
+    pros: AppStore.getAllChrono('pros'),
+    cons: AppStore.getAllChrono('cons')
   };
 }
 
@@ -45,12 +45,12 @@ export default class ProConApp extends React.Component {
         <div>
           <section className="pros">
             <h1>Pros</h1>
-            <ProConSection type="pros" items={AppStore.getAllChrono('pros')} />
+            <ProConSection type="pros" items={this.state.pros} />
           </section>
           <span></span>
           <section className="cons">
             <h1>Cons</h1>
-            <ProConSection type="cons" items={AppStore.getAllChrono('cons')} />
+            <ProConSection type="cons" items={this.state.cons} />
           </section>
         </div>
         <div className="save">

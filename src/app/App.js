@@ -1,8 +1,8 @@
-var ProConApp = require('./components/ProConApp');
-var FirebaseUtil = require('./utils/FirebaseUtil');
-var React = require('react');
+import ProConApp from './components/ProConApp';
+import FirebaseUtil from './utils/FirebaseUtil';
+import React from 'react';
 
-FirebaseUtil.loadPage();
+// FirebaseUtil.loadPage();
 
 React.render(
   <ProConApp />,

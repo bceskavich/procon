@@ -1,4 +1,4 @@
-import Actions from '../actions/Actions';
+import PCActions from '../actions/PCActions';
 import React, { Component } from 'react';
 
 export default class ProConItem extends Component {
@@ -21,12 +21,12 @@ export default class ProConItem extends Component {
 
   // Handles changing the weight of the item
   _changeWeight() {
-    Actions.changeItemWeight(this.props.item.id, this.props.item.type);
+    PCActions.changeItemWeight(this.props.item.id, this.props.item.type);
   }
 
   // Calls the delete for an item
   _delete() {
-    Actions.deleteItem(this.props.item.id, this.props.item.type);
+    PCActions.deleteItem(this.props.item.id, this.props.item.type);
   }
 
   _getWeightClass() {

@@ -1,5 +1,5 @@
 import alt from '../alt';
-import PCActions from '../actions/Actions';
+import PCActions from '../actions/PCActions';
 import FirebaseUtils from '../utils/FirebaseUtil';
 
 class AppStore {
@@ -69,27 +69,20 @@ class AppStore {
     return this.items[type][id];
   }
 
-  static getFirebaseRef() {
-    if (this.firebaseRef) {
-      return firebaseRef;
-    } else {
-      return null;
-    }
-  }
-
   static getAllOfType(type) {
     return this.items[type];
   }
 
   static getAllChrono(type) {
-    var items = [];
-    for (var id in this.items[type]) {
-      items.push(this.items[type][id]);
+    const { items } = this.getState();
+    var itemsArray = [];
+    for (var id in items[type]) {
+      itemsArray.push(items[type][id]);
     }
-    items.sort((a,b) => {
+    itemsArray.sort((a,b) => {
       return a.date - b.date;
     });
-    return items;
+    return itemsArray;
   }
 
 }

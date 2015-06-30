@@ -1,5 +1,5 @@
 var Firebase = require("firebase");
-var Actions = require("../actions/Actions");
+var PCActions = require("../actions/PCActions");
 
 var basePath = "https://procon.firebaseio.com/";
 
@@ -32,7 +32,7 @@ module.exports = {
     var data;
     ref.on("value", function(snapshot) {
       data = snapshot.val();
-      Actions.loadPage(data, id);
+      PCActions.loadPage(data, id);
     }, function(error) {
       // TODO - better error handling here
       console.log("Read failed: " + error.code);

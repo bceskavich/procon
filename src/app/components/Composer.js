@@ -1,4 +1,4 @@
-import Actions from '../actions/Actions';
+import PCActions from '../actions/PCActions';
 import React, { Component } from 'react';
 
 const ENTER_KEY_CODE = 13;
@@ -34,7 +34,7 @@ export default class Composer extends Component {
       event.preventDefault();
       var text = this.state.text.trim();
       if (text) {
-        Actions.createItem(text, this.props.type);
+        PCActions.createItem({text: text, type: this.props.type});
       }
       this.setState({text: ''});
     }

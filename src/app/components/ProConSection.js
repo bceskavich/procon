@@ -1,6 +1,6 @@
 import ProConItem from './ProConItem';
 import Composer from './Composer';
-import Actions from '../actions/Actions';
+import PCActions from '../actions/PCActions';
 import React, { Component, PropTypes } from 'react';
 
 function getItemList(items) {
@@ -38,7 +38,7 @@ class ProConSection extends Component {
     return (
       <div className={this.props.type + "-section"}>
         <Composer type={this.props.type} />
-          {getItemList(this.state.items)}
+          {getItemList(this.props.items)}
         <div className="clear">
           {clear}
         </div>
@@ -47,13 +47,13 @@ class ProConSection extends Component {
   }
 
   _clearAll() {
-    Actions.deleteAll(this.props.type);
+    PCActions.deleteAll(this.props.type);
   }
 }
 
 ProConSection.propTypes = {
   type: PropTypes.string.isRequired,
-  items: PropTypes.object.isRequired
+  items: PropTypes.array.isRequired
 };
 
 export default ProConSection;
