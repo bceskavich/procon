@@ -59,6 +59,18 @@
 
 	  "use strict";
 
+	  function _interopRequireWildcard(obj) {
+	    if (obj && obj.__esModule) {
+	      return obj;
+	    } else {
+	      var newObj = {};if (obj != null) {
+	        for (var key in obj) {
+	          if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];
+	        }
+	      }newObj["default"] = obj;return newObj;
+	    }
+	  }
+
 	  function _interopRequireDefault(obj) {
 	    return obj && obj.__esModule ? obj : { "default": obj };
 	  }
@@ -69,13 +81,13 @@
 
 	  var _utilsFirebaseUtil = __webpack_require__(178);
 
-	  var _utilsFirebaseUtil2 = _interopRequireDefault(_utilsFirebaseUtil);
+	  var FirebaseUtil = _interopRequireWildcard(_utilsFirebaseUtil);
 
 	  var _react = __webpack_require__(20);
 
 	  var _react2 = _interopRequireDefault(_react);
 
-	  // FirebaseUtil.loadPage();
+	  FirebaseUtil.loadPage();
 
 	  _react2["default"].render(_react2["default"].createElement(_componentsProConApp2["default"], null), document.getElementById("proconapp"));
 
@@ -23145,6 +23157,18 @@
 	    };
 	  })();
 
+	  function _interopRequireWildcard(obj) {
+	    if (obj && obj.__esModule) {
+	      return obj;
+	    } else {
+	      var newObj = {};if (obj != null) {
+	        for (var key in obj) {
+	          if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];
+	        }
+	      }newObj["default"] = obj;return newObj;
+	    }
+	  }
+
 	  function _interopRequireDefault(obj) {
 	    return obj && obj.__esModule ? obj : { "default": obj };
 	  }
@@ -23165,7 +23189,7 @@
 
 	  var _utilsFirebaseUtil = __webpack_require__(178);
 
-	  var _utilsFirebaseUtil2 = _interopRequireDefault(_utilsFirebaseUtil);
+	  var FirebaseUtils = _interopRequireWildcard(_utilsFirebaseUtil);
 
 	  var AppStore = (function () {
 	    function AppStore() {
@@ -23186,7 +23210,7 @@
 	      // Updates Firebase store if extant
 	      value: function updateFB() {
 	        if (this.firebaseRef) {
-	          _utilsFirebaseUtil2["default"].saveToStore(this.firebaseRef, this.items);
+	          FirebaseUtils.saveToStore(this.firebaseRef, this.items);
 	        }
 	      }
 	    }, {
@@ -23230,13 +23254,13 @@
 	    }, {
 	      key: "onCreateNewStore",
 	      value: function onCreateNewStore() {
-	        var id = _utilsFirebaseUtil2["default"].createNewStore(this.items);
+	        var id = FirebaseUtils.createNewStore(this.items);
 	        this.firebaseRef = id;
 	      }
 	    }, {
 	      key: "onLoadPage",
 	      value: function onLoadPage(payload) {
-	        this.items = payload.data;
+	        this.items = payload.items;
 	        this.firebaseRef = payload.ref;
 	      }
 	    }], [{
@@ -23312,72 +23336,89 @@
 
 	  "use strict";
 
-	  var Firebase = __webpack_require__(179);
-	  var PCActions = __webpack_require__(4);
+	  Object.defineProperty(exports, "__esModule", {
+	    value: true
+	  });
+	  exports.createNewStore = createNewStore;
+	  exports.loadFromStore = loadFromStore;
+	  exports.saveToStore = saveToStore;
+	  exports.loadPage = loadPage;
+
+	  function _interopRequireDefault(obj) {
+	    return obj && obj.__esModule ? obj : { "default": obj };
+	  }
+
+	  var _firebase = __webpack_require__(179);
+
+	  var _firebase2 = _interopRequireDefault(_firebase);
+
+	  var _actionsPCActions = __webpack_require__(4);
+
+	  var _actionsPCActions2 = _interopRequireDefault(_actionsPCActions);
 
 	  var basePath = "https://procon.firebaseio.com/";
 
-	  module.exports = {
+	  /**
+	   * Creates a new Firebase store for a user
+	   * @param {object} data -- The pros / cons to be stored
+	   * @return {string} id -- The unique ID for the Firebase store
+	   */
 
-	    /**
-	     * Creates a new Firebase store for a user
-	     * @param {object} data -- The pros / cons to be stored
-	     * @return {string} id -- The unique ID for the Firebase store
-	     */
-	    createNewStore: function createNewStore(data) {
-	      // Generate a random alphnumeric ID
-	      var id = Math.random().toString(36).substr(2, 20);
-	      var firebasePath = basePath + id;
-	      var ref = new Firebase(firebasePath);
-	      ref.set(data);
+	  function createNewStore(data) {
+	    // Generate a random alphnumeric ID
+	    var id = Math.random().toString(36).substr(2, 20);
+	    var firebasePath = basePath + id;
+	    var ref = new _firebase2["default"](firebasePath);
+	    ref.set(data);
 
-	      return id;
-	    },
+	    return id;
+	  }
 
-	    /**
-	     * Loads previous user data from Firebase
-	     * @param {string} id -- The users unique id for Firebase
-	     * @return {object} data -- The saved pros / cons
-	     */
-	    loadFromStore: function loadFromStore(id) {
-	      var firebasePath = basePath + id;
-	      var ref = new Firebase(firebasePath);
+	  /**
+	   * Loads previous user data from Firebase
+	   * @param {string} id -- The users unique id for Firebase
+	   * @return {object} data -- The saved pros / cons
+	   */
 
-	      var data;
-	      ref.on("value", function (snapshot) {
-	        data = snapshot.val();
-	        PCActions.loadPage(data, id);
-	      }, function (error) {
-	        // TODO - better error handling here
-	        console.log("Read failed: " + error.code);
-	      });
-	    },
+	  function loadFromStore(id) {
+	    var firebasePath = basePath + id;
+	    var ref = new _firebase2["default"](firebasePath);
 
-	    /**
-	     * Saves data to an existing Firebase store
-	     * @param {string} id -- The Firebase store ID
-	     * @param {object} data -- The data to be set
-	     */
-	    saveToStore: function saveToStore(id, data) {
-	      var firebasePath = basePath + id;
-	      var ref = new Firebase(firebasePath);
-	      ref.set(data);
-	    },
+	    var data;
+	    ref.on("value", function (snapshot) {
+	      data = snapshot.val();
+	      _actionsPCActions2["default"].loadPage({ items: data, ref: id });
+	    }, function (error) {
+	      // TODO - better error handling here
+	      console.log("Read failed: " + error.code);
+	    });
+	  }
 
-	    /**
-	     * Loads in data from Firebase, if it exists
-	     * TODO - There's got to be a better way to do this
-	     */
-	    loadPage: function loadPage() {
-	      var path = location.href.split("/");
+	  /**
+	   * Saves data to an existing Firebase store
+	   * @param {string} id -- The Firebase store ID
+	   * @param {object} data -- The data to be set
+	   */
 
-	      if (path[path.length - 1]) {
-	        var ref = path[path.length - 1];
-	        this.loadFromStore(ref);
-	      }
+	  function saveToStore(id, data) {
+	    var firebasePath = basePath + id;
+	    var ref = new _firebase2["default"](firebasePath);
+	    ref.set(data);
+	  }
+
+	  /**
+	   * Loads in data from Firebase, if it exists
+	   * TODO - There's got to be a better way to do this
+	   */
+
+	  function loadPage() {
+	    var path = location.href.split("/");
+
+	    if (path[path.length - 1]) {
+	      var ref = path[path.length - 1];
+	      loadFromStore(ref);
 	    }
-
-	  };
+	  }
 
 	  /* REACT HOT LOADER */
 	}).call(undefined);if (false) {

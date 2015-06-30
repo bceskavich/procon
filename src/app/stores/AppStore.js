@@ -1,6 +1,6 @@
 import alt from '../alt';
 import PCActions from '../actions/PCActions';
-import FirebaseUtils from '../utils/FirebaseUtil';
+import * as FirebaseUtils from '../utils/FirebaseUtil';
 
 class AppStore {
 
@@ -61,7 +61,7 @@ class AppStore {
   }
 
   onLoadPage(payload) {
-    this.items = payload.data;
+    this.items = payload.items;
     this.firebaseRef = payload.ref;
   }
 
